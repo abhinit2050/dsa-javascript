@@ -51,22 +51,36 @@
 
         }
 
-        deleteNode(root, value){
+
+        deleteNode(root, val){
+
+            //deleteNode function will be called recursively till you can make the node value null and then rearrange the tree
+
                 if(root === null){
                     return null
-                } else if(root.value>value){
-                    root.left = this.deleteNode(root.left, value)
-                } else if(root.value<value){
-                    root.right = this.deleteNode(root.right, value)
-                } else if(!root.left && !root.right){
-                    return null;
+                } else if(root.value>val){
+                    root.left = this.deleteNode(root.left, val)       //keep traversing the left side till you find the desired node
+                } else if(root.value<val){  
+                    root.right = this.deleteNode(root.right, val)      //keep traversing the right side till you find the desired node
+                } 
+                //at this point, we have found out the node to be deleted. Now we will check for the node's children
+                else if(!root.left && !root.right){
+                    return null;        //no children => delete the node by making it null. No rearrangements required
                 } else if(!root.left){
-                    return root.right
+                    return root.right   //only one child => this return statement is actually storing the child
+                                        // which will be used later for rearrangement of binary tree post node deletion
                 } else if(!root.right){
-                    return root.left
+                    return root.left    //same comment as above
+                } else{
+                    
+                    //final case where the node has two children
+                
+                    root.value = this.minValue(root.right);     //save the value of the min value node on right which will replace the deleted node 
+                                                                
+                    root.right = this.deleteNode(root.right, root.value)
                 }
-                root.value = this.minValue(root.right);
-                root.right = this.deleteNode(root.right, root.value)
+
+                return root;
         }
         
         searchTree(root, val){
@@ -102,14 +116,18 @@
     let bst = new BSTree()
     bst.isTreeEmpty();
     
-    bst.makeTree(20);
-    bst.makeTree(30);
-    bst.makeTree(7);
-    bst.makeTree(99);
-    bst.makeTree(25);
-
-    console.log(bst.root);
-   bst.removeData(99);
+    bst.makeTree(23);
+    bst.makeTree(10);
+    bst.makeTree(50);
+    bst.makeTree(5);
+    bst.makeTree(12);
+    bst.makeTree(45);
+    bst.makeTree(55);
+    bst.makeTree(52);
+    bst.makeTree(27);
+    
+    // console.log(bst.root);
+   bst.removeData(50);
    console.log(bst.root);
     
 
